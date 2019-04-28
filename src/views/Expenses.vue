@@ -2,7 +2,7 @@
   <div class="max-w-md m-auto py-10">
     <div class="text-red" v-if="error">{{ error }}</div>
     <h3 class="font-mono font-regular text-3xl mb-4">Add a new Expense</h3>
-
+  
     <form @submit.prevent="addExpense">
       <div class="mb-6">
         <label for="date" class="label">Date</label>
@@ -53,6 +53,67 @@
 
     <hr class="border border-grey-light my-6" />
 
+    <!-- beginning of tailwind css table -->
+
+    <div class="w-2/3 mx-auto">
+  <div class="bg-white shadow-md rounded my-6">
+    <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+      <thead>
+        <tr>
+          <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Date</th>
+          <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Description</th>
+          <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Amount</th>
+          <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hover:bg-grey-lighter" v-for="expense in expenses" :key="expense.id" :expense="expense">
+          <td class="py-4 px-6 border-b border-grey-light">{{ expense.date }}</td>
+          <td class="py-4 px-6 border-b border-grey-light">{{ expense.description }}</td>
+          <td class="py-4 px-6 border-b border-grey-light">{{ expense.amount }}</td>
+          <td class="py-4 px-6 border-b border-grey-light">{{ expense.category }}</td>
+          <td class="py-4 px-6 border-b border-grey-light">
+            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark">Edit</a>
+            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-blue hover:bg-blue-dark">View</a>
+          </td>
+        </tr>
+        <tr class="hover:bg-grey-lighter">
+          <td class="py-4 px-6 border-b border-grey-light">Paris</td>
+          <td class="py-4 px-6 border-b border-grey-light">
+            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark">Edit</a>
+            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-blue hover:bg-blue-dark">View</a>
+          </td>
+        </tr>
+        <tr class="hover:bg-grey-lighter">
+          <td class="py-4 px-6 border-b border-grey-light">London</td>
+          <td class="py-4 px-6 border-b border-grey-light">
+            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark">Edit</a>
+            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-blue hover:bg-blue-dark">View</a>
+          </td>
+        </tr>
+        <tr class="hover:bg-grey-lighter">
+          <td class="py-4 px-6 border-b border-grey-light">Oslo</td>
+          <td class="py-4 px-6 border-b border-grey-light">
+            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark">Edit</a>
+            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-blue hover:bg-blue-dark">View</a>
+          </td>
+        </tr>
+        <tr class="hover:bg-grey-lighter">
+          <td class="py-4 px-6 border-b border-grey-light">Mexico City</td>
+          <td class="py-4 px-6 border-b border-grey-light">
+            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark">Edit</a>
+            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-blue hover:bg-blue-dark">View</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- end of tailwind css table -->
+
+
+          
     <ul class="list-reset mt-4">
       <li class="py-4" v-for="expense in expenses" :key="expense.id" :expense="expense">
         <div class="flex items-center justify-between flex-wrap">
@@ -116,7 +177,8 @@ export default {
       expenses: [],
       newExpense: [],
       error: '',
-      editedExpense: ''
+      editedExpense: '',
+      months: ['January', 'February', 'March', 'April', 'May', 'June']
     }
   },
   created () {
@@ -170,6 +232,10 @@ export default {
       this.editedExpense = ''
       this.$http.secured.patch(`/api/expenses/${expense.id}`, { expense: { date: expense.date, description: expense.description, amount: expense.amount, category_id: expense.category } })
         .catch(error => this.setError(error, 'Cannot update expense'))
+    },
+    currentMonth () {
+      let index = new Date().getMonth()
+      return this.months[index]
     }
   }
 }
