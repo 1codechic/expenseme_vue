@@ -2,7 +2,7 @@
   <div class="max-w-sm m-auto my-8">
     <div class="border p-10 border-grey-light shadow rounded">
       <h3 class="text-2xl mb-6 text-grey-darkest">Log In</h3>
-      <form @submit.prevent="login">
+      <form @submit.prevent="signin">
         <div class="text-red" v-if="error">{{ error }}</div>
 
         <div class="mb-6">
@@ -31,7 +31,7 @@
 import axios from "axios";
 
 export default {
-  name: 'Login',
+  name: 'Signin',
   data () {
     return {
       email: '',
@@ -43,9 +43,9 @@ export default {
     this.checkSignedIn()
   },
   methods: {
-    login() {
-      this.$http.plain.post('/login', { email: this.email, password: this.password})
-      .then(response => this.signSuccessfull(response))
+    signin() {
+      this.$http.plain.post('/signin', { email: this.email, password: this.password})
+      .then(response => this.signinSuccessful(response))
       .catch(error => this.signinFailed(error))
     },
     signinSuccessful (response) {
@@ -56,7 +56,7 @@ export default {
       localStorage.csrf = response.data.csrf
       localStorage.signedIn = true
       this.error = ''
-      this.$router.replace('/categories')
+      this.$router.replace('/expenses')
     },
     signinFailed (error) {
       this.error = (error.response && error.response.data && error.response.data.error) || ''
@@ -65,7 +65,7 @@ export default {
     },
     checkSignedIn () {
       if (localStorage.signedIn) {
-        this.$router.replace('/categories')
+        this.$router.replace('/expenses')
       }
     }
   }

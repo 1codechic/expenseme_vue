@@ -6,7 +6,7 @@
       <div class="mb-6">
         <input class="input"
           autofocus autocomplete="off"
-          placeholder="Type an arist name"
+          placeholder="Type a category name"
           v-model="newCategory.name" />
       </div>
       <input type="submit" value="Add Category" class="font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block w-full py-4 text-white items-center justify-center" />
@@ -19,7 +19,6 @@
 
         <div class="flex items-center justify-between flex-wrap">
           <p class="block flex-1 font-mono font-semibold flex items-center ">
-            <svg class="fill-current text-indigo w-6 h-6 mr-2" viewBox="0 0 20 20" width="20" height="20"><title>Expense Category</title><path d="M15.75 8l-3.74-3.75a3.99 3.99 0 0 1 6.82-3.08A4 4 0 0 1 15.75 8zm-13.9 7.3l9.2-9.19 2.83 2.83-9.2 9.2-2.82-2.84zm-1.4 2.83l2.11-2.12 1.42 1.42-2.12 2.12-1.42-1.42zM10 15l2-2v7h-2v-5z"></path></svg>
             {{ category.name }}
           </p>
 
@@ -46,7 +45,7 @@
 <script>
 export default {
   name: 'Categories',
-  data() {
+  data () {
     return {
       categories: [],
       newCategory: [],
@@ -54,20 +53,20 @@ export default {
       editedCategory: ''
     }
   },
-  created() {
+  created () {
     if (!localStorage.signedIn) {
       this.$router.replace('/')
     } else {
       this.$http.secured.get('/api/categories')
-      .then(response => { this.categories = response.data })
-      .catch(error => this.setError(error, 'Something went wrong'))
+        .then(response => { this.categories = response.data })
+        .catch(error => this.setError(error, 'Something went wrong'))
     }
   },
   methods: {
     setError (error, text) {
-      this.error = ( error.response && error.response.data && error.response.data.error) || text
+      this.error = (error.response && error.response.data && error.response.data.error) || text
     },
-    addCategory() {
+    addCategory () {
       const value = this.newCategory
       if (!value) {
         return
@@ -80,17 +79,18 @@ export default {
         .catch(error => this.setError(error, 'Cannot create category'))
     },
     deleteCategory (category) {
-      this.$http.secured.get('/api/categories/${category.id}')
+      this.$http.secured.delete(`/api/categories/${category.id}`)
         .then(response => {
-          this.category.splice(this.category.indexOf(category), 1)
+          this.categories.splice(this.categories.indexOf(category), 1)
         })
+        .catch(error => this.setError(error, 'Cannot delete category'))
     },
-    editCategory(category) {
+    editCategory (category) {
       this.editedCategory = category
     },
     updateCategory (category) {
       this.editedCategory = ''
-      this.$http.secured.patch(`/api/categories/${category.id}`, { cateogy: { title: category.name } })
+      this.$http.secured.patch(`/api/categories/${category.id}`, { category: { name: category.name } })
         .catch(error => this.setError(error, 'Cannot update category'))
     }
   }

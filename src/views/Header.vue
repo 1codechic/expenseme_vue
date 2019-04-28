@@ -6,10 +6,10 @@
         <a href="/" class="uppercase text-sm font-mono pl-4 font-semibold no-underline text-indigo-dark hover:text-indigo-darker">expen$eMe</a>
       </div>
       <div>
-        <router-link to="/" class="link-grey px-2 no-underline" v-if="!signedIn()">Log in</router-link>
+        <router-link to="/" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign in</router-link>
         <router-link to="/signup" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign Up</router-link>
-        <router-link to="/records" class="link-grey px-2 no-underline" v-if="signedIn()">Categories</router-link>
-        <router-link to="/artists" class="link-grey px-2 no-underline" v-if="signedIn()">Expenses</router-link>
+        <router-link to="/expenses" class="link-grey px-2 no-underline" v-if="signedIn()">Expenses</router-link>
+        <router-link to="/categories" class="link-grey px-2 no-underline" v-if="signedIn()">Categories</router-link>
         <a href="#" @click.prevent="signOut" class="link-grey px-2 no-underline" v-if="signedIn()">Sign out</a>
       </div>
     </div>
@@ -31,7 +31,7 @@
         return localStorage.signedIn
       },
       signOut () {
-        this.$http.secured.delete('/login')
+        this.$http.secured.delete('/signin')
           .then(response => {
             delete localStorage.csrf
             delete localStorage.signedIn
