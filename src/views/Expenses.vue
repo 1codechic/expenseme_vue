@@ -35,7 +35,7 @@
           class="input"
           autofocus
           autocomplete="off"
-          placeholder="description"
+          placeholder="amount"
           v-model="newExpense.amount">
       </div>
 
@@ -45,8 +45,8 @@
           <option disabled value="">Select a Category</option>
           <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.name }}</option>
         </select>
-        <p class="pt-4">Don't a Category? <router-link to="/categories" class="link-grey">Create one</router-link></p>
-      </div>
+        <p class="pt-4">Don't see a Category? <router-link class="text-grey-darker underline" to="/categories">Create a Category</router-link></p>
+       </div>
 
       <input type="submit" value="Add Expense" class="font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block w-full py-4 text-white items-center justify-center">
     </form>
@@ -64,7 +64,7 @@
         </div>
 
         <button class="bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded"
-          @click.prevent="editExpense(expese)">Edit</button>
+          @click.prevent="editExpense(expense)">Edit</button>
 
         <button class="bg-transparent text-sm hover:bg-red text-red hover:text-white no-underline font-bold py-2 px-4 rounded border border-red"
          @click.prevent="deleteExpense(expense)">Delete</button>
@@ -91,7 +91,7 @@
 
               <div class="mb-6">
                  <select id="category_update" class="select" v-model="expense.category">
-                    <option disabled value="">Select Category</option>
+                    <option value="">Select Category</option>
                   <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.name }}</option>
                   </select>
               </div>
@@ -105,10 +105,12 @@
   </div>
 </template>
 
+
 <script>
+
 export default {
   name: 'Expenses',
-  data () {
+  data() {
     return {
       categories: [],
       expenses: [],
@@ -124,8 +126,9 @@ export default {
       this.$http.secured.get('/api/expenses')
         .then(response => { this.expenses = response.data })
         .catch(error => this.setError(error, 'Something went wrong'))
-      this.$http.secured.get('/api/expenses')
-        .then(response => { this.expense = response.data })
+
+      this.$http.secured.get('/api/categories')
+        .then(response => { this.categories = response.data })
         .catch(error => this.setError(error, 'Something went wrong'))
     }
   },
@@ -146,7 +149,7 @@ export default {
       if (!value) {
         return
       }
-      this.$http.secured.post('/api/expenses/', { expense: { date: this.newExpense.date, description: this.newExpense.description, category_id: this.newExpense.category } })
+      this.$http.secured.post('/api/expenses/', { expense: { date: this.newExpense.date, description: this.newExpense.description, amount: this.newExpense.amount, category_id: this.newExpense.category } })
         .then(response => {
           this.expenses.push(response.data)
           this.newExpense = ''
