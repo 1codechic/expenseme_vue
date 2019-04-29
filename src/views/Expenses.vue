@@ -31,6 +31,7 @@
         <label for="amount" class="label">Amount</label>
         <input
           type="number"
+          step="0.01"
           id="amount"
           class="input"
           autofocus
@@ -53,67 +54,6 @@
 
     <hr class="border border-grey-light my-6" />
 
-    <!-- beginning of tailwind css table -->
-
-    <div class="w-2/3 mx-auto">
-  <div class="bg-white shadow-md rounded my-6">
-    <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
-      <thead>
-        <tr>
-          <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Date</th>
-          <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Description</th>
-          <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Amount</th>
-          <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Category</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="hover:bg-grey-lighter" v-for="expense in expenses" :key="expense.id" :expense="expense">
-          <td class="py-4 px-6 border-b border-grey-light">{{ expense.date }}</td>
-          <td class="py-4 px-6 border-b border-grey-light">{{ expense.description }}</td>
-          <td class="py-4 px-6 border-b border-grey-light">{{ expense.amount }}</td>
-          <td class="py-4 px-6 border-b border-grey-light">{{ expense.category }}</td>
-          <td class="py-4 px-6 border-b border-grey-light">
-            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark">Edit</a>
-            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-blue hover:bg-blue-dark">View</a>
-          </td>
-        </tr>
-        <tr class="hover:bg-grey-lighter">
-          <td class="py-4 px-6 border-b border-grey-light">Paris</td>
-          <td class="py-4 px-6 border-b border-grey-light">
-            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark">Edit</a>
-            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-blue hover:bg-blue-dark">View</a>
-          </td>
-        </tr>
-        <tr class="hover:bg-grey-lighter">
-          <td class="py-4 px-6 border-b border-grey-light">London</td>
-          <td class="py-4 px-6 border-b border-grey-light">
-            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark">Edit</a>
-            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-blue hover:bg-blue-dark">View</a>
-          </td>
-        </tr>
-        <tr class="hover:bg-grey-lighter">
-          <td class="py-4 px-6 border-b border-grey-light">Oslo</td>
-          <td class="py-4 px-6 border-b border-grey-light">
-            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark">Edit</a>
-            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-blue hover:bg-blue-dark">View</a>
-          </td>
-        </tr>
-        <tr class="hover:bg-grey-lighter">
-          <td class="py-4 px-6 border-b border-grey-light">Mexico City</td>
-          <td class="py-4 px-6 border-b border-grey-light">
-            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-green hover:bg-green-dark">Edit</a>
-            <a href="#" class="text-grey-lighter font-bold py-1 px-3 rounded text-xs bg-blue hover:bg-blue-dark">View</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- end of tailwind css table -->
-
-
-          
     <ul class="list-reset mt-4">
       <li class="py-4" v-for="expense in expenses" :key="expense.id" :expense="expense">
         <div class="flex items-center justify-between flex-wrap">
@@ -162,13 +102,13 @@
           </form>
         </div>
       </li>
-    </ul>
+    </ul> 
   </div>
 </template>
 
 
 <script>
-
+import axios from "axios"
 export default {
   name: 'Expenses',
   data() {
@@ -206,31 +146,38 @@ export default {
       })
       return category
     },
-    addExpense () {
-      const value = this.newExpense
-      if (!value) {
-        return
-      }
-      this.$http.secured.post('/api/expenses/', { expense: { date: this.newExpense.date, description: this.newExpense.description, amount: this.newExpense.amount, category_id: this.newExpense.category } })
-        .then(response => {
-          this.expenses.push(response.data)
-          this.newExpense = ''
+      addExpense: function() {
+        let params = {
+        date: this.newExpense.date,
+        description: this.newExpense.description,
+        amount: this.newExpense.amount,
+        category_id: this.newExpense.category
+        }
+        this.$http.secured.post('/api/expenses', params).then(response => {
+          this.expenses.push(response.data);
         })
-        .catch(error => this.setError(error, 'Cannot create expense'))
-    },
-    deleteExpense (expense) {
-      this.$http.secured.delete(`/api/expenses/${expense.id}`)
-        .then(response => {
-          this.expenses.splice(this.expenses.indexOf(expense), 1)
+      },
+      deleteExpense: function(expense) {
+        this.$http.secured.delete("/api/expenses/" + expense.id).then(response => {
+          let index = this.expenses.indexOf(expense);
+          this.expenses.splice(index, 1);
         })
-        .catch(error => this.setError(error, 'Cannot delete expense'))
-    },
+      },
     editExpense (expense) {
+      console.log("is this working?")
       this.editedExpense = expense
     },
-    updateExpense (expense) {
+    updateExpense: function (expense) {
+      let params = {
+        date: expense.date,
+        description: expense.description,
+        amount: expense.amount,
+        category_id: expense.category
+      };
       this.editedExpense = ''
-      this.$http.secured.patch(`/api/expenses/${expense.id}`, { expense: { date: expense.date, description: expense.description, amount: expense.amount, category_id: expense.category } })
+      this.$http.secured.patch("/api/expenses/" + expense.id, params).then(response => {
+        expense = response.data
+      })
         .catch(error => this.setError(error, 'Cannot update expense'))
     },
     currentMonth () {
