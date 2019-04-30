@@ -59,7 +59,7 @@
         <div class="flex items-center justify-between flex-wrap">
           <div class="flex-1 flex justify-between flex-wrap pr-4">
           <p class="block flex font-mono font-semibold flex items-center">
-            {{ expense.date }} &mdash; {{ expense.description }} &mdash; {{ expense.amount }} &mdash; {{ expense.category }}
+            {{ expense.date }} &mdash; {{ expense.description }} &mdash; ${{ expense.amount }} &mdash; {{ expense.category }}
           </p>
           <p class="block font-mono font-semibold">{{ getCategory(expense) }}</p>
         </div>
