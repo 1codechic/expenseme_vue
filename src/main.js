@@ -5,6 +5,7 @@ import VueAxios from 'vue-axios'
 import { securedAxiosInstance, plainAxiosInstance } from './backend/axios'
 import './main.css'
 import axios from 'axios'
+import BootstrapVue from 'bootstrap-vue'
 
 
 
