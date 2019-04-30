@@ -8,6 +8,9 @@ import axios from 'axios'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import "chart.js";
+import "hchs-vue-charts";
+
 
 
 
@@ -20,7 +23,9 @@ Vue.config.productionTip = false
 Vue.use(VueAxios, {
   secured: securedAxiosInstance,
   plain: plainAxiosInstance
-})
+});
+
+Vue.use(window.VueCharts);
 
 new Vue({
   router,
