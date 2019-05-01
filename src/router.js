@@ -7,6 +7,7 @@ import Categories from './views/Categories.vue'
 import Expenses from './views/Expenses.vue'
 
 
+
 Vue.use(Router)
 
 export default new Router({
@@ -33,5 +34,5 @@ export default new Router({
       name: 'Signup',
       component: Signup
     }
-  ]
+    ]
 })

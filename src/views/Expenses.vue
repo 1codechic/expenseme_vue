@@ -51,15 +51,45 @@
 
       <input type="submit" value="Add Expense" class="font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block w-full py-4 text-white items-center justify-center">
     </form>
+    <br>
 
     <hr class="border border-grey-light my-6" />
+ <!-- bootstrap table begin -->
+    <!-- <div class="card shadow p-3 mb-5 bg-white rounded">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Description</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Category</th>
+           
+        </tr>
+      </thead>
+    <tbody>
+    <tr v-for="expense in expenses" :key="expense.id" :expense="expense">
+      <td>{{ expense.date }}</td>
+      <td>{{ expense.description }}</td>
+      <td>{{ expense.amount }}</td>
+      <td>{{ getCategory(expense) }}</td>
+      <td>{{ expense.category }}</td>
+      <td><button class="bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded"
+        @click.prevent="editExpense(expense)">Edit</button>
+      </td>
+      <td><button class="bg-transparent text-sm hover:bg-red text-red hover:text-white no-underline font-bold py-2 px-4 rounded border border-red"
+       @click.prevent="deleteExpense(expense)">Delete</button>
+      </td>  
+    </tr>
+  </tbody>
+</table>
+</div> end bootstrap table-->
 
     <ul class="list-reset mt-4">
       <li class="py-4" v-for="expense in expenses" :key="expense.id" :expense="expense">
         <div class="flex items-center justify-between flex-wrap">
           <div class="flex-1 flex justify-between flex-wrap pr-4">
-          <p class="block flex font-mono font-semibold flex items-center">
-            {{ expense.date }} &mdash; {{ expense.description }} &mdash; ${{ expense.amount }} &mdash; {{ expense.category }}
+          <p class="b-table">
+            {{ expense.date }} - {{ expense.description }} - ${{ expense.amount }} - {{ expense.category }}
           </p>
           <p class="block font-mono font-semibold">{{ getCategory(expense) }}</p>
         </div>
@@ -98,11 +128,13 @@
               </div>
 
               <input type="submit" value="Update" class="bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">
+              <input type="submit" value="cancel" class="bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">
             </div>
           </form>
         </div>
       </li>
     </ul> 
+    <p class="block flex font-mono font-semibold flex items-center">Total Expenses: ${{ totalExpense }}</p>
   </div>
 </template>
 
@@ -117,8 +149,7 @@ export default {
       expenses: [],
       newExpense: [],
       error: '',
-      editedExpense: '',
-      months: ['January', 'February', 'March', 'April', 'May', 'June']
+      editedExpense: ''
     }
   },
   created () {
@@ -132,6 +163,15 @@ export default {
       this.$http.secured.get('/api/categories')
         .then(response => { this.categories = response.data })
         .catch(error => this.setError(error, 'Something went wrong'))
+    }
+  },
+  computed: {
+    totalExpense: function() {
+      let sum = 0;
+      for ( let i = 0; i < this.expenses.length; i ++) {
+        sum += (parseFloat(this.expenses[i].amount))
+      }
+      return sum;
     }
   },
   methods: {
@@ -161,6 +201,7 @@ export default {
         this.$http.secured.delete("/api/expenses/" + expense.id).then(response => {
           let index = this.expenses.indexOf(expense);
           this.expenses.splice(index, 1);
+          console.log("expense deleted")
         })
       },
     editExpense (expense) {
@@ -179,11 +220,20 @@ export default {
         expense = response.data
       })
         .catch(error => this.setError(error, 'Cannot update expense'))
-    },
-    currentMonth () {
-      let index = new Date().getMonth()
-      return this.months[index]
+      },
+      cancel(expense) {
+        let params = {
+        date: expense.date,
+        description: expense.description,
+        amount: expense.amount,
+        category_id: expense.category
+      };
+      this.editedExpense = ''
+      this.$http.secured.patch("api/expenses/" + expense.id, params).then(response => {
+        this.EditedExpense = false;
+      })
     }
   }
 }
 </script>
+
