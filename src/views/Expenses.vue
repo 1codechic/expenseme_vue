@@ -30,7 +30,7 @@
       <div class="mb-6">
         <label for="amount" class="label">Amount</label>
         <input
-          type="number"
+          type="number"  
           step="0.01"
           id="amount"
           class="input"
@@ -89,7 +89,7 @@
         <div class="flex items-center justify-between flex-wrap">
           <div class="flex-1 flex justify-between flex-wrap pr-4">
           <p class="b-table">
-            {{ expense.date }} - {{ expense.description }} - ${{ expense.amount }} - {{ expense.category }}
+            {{ expense.date }} - {{ expense.description }} - ${{ formatPrice(expense.amount) }} - {{ expense.category }}
           </p>
           <p class="block font-mono font-semibold">{{ getCategory(expense) }}</p>
         </div>
@@ -134,7 +134,7 @@
         </div>
       </li>
     </ul> 
-    <p class="block flex font-mono font-semibold flex items-center">Total Expenses: ${{ totalExpense }}</p>
+    <p class="block flex font-mono font-semibold flex items-center">Total Expenses: ${{ formatPrice(totalExpense) }}</p>
   </div>
 </template>
 
@@ -232,8 +232,13 @@ export default {
       this.$http.secured.patch("api/expenses/" + expense.id, params).then(response => {
         this.EditedExpense = false;
       })
+    },
+    formatPrice(value) {
+        let val = (value/1).toFixed(2)
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     }
   }
 }
+
 </script>
 
