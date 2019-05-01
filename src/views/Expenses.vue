@@ -121,6 +121,7 @@
               </div>
 
               <div class="mb-6">
+                 <label for="category" class="label">Category</label>
                  <select id="category_update" class="select" v-model="expense.category">
                     <option value="">Select Category</option>
                   <option :value="category.id" v-for="category in categories" :key="category.id">{{ category.name }}</option>
@@ -128,7 +129,7 @@
               </div>
 
               <input type="submit" value="Update" class="bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">
-              <input type="submit" value="cancel" class="bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">
+              <button class= "bg-transparent text-sm hover:bg-red text-red hover:text-white no-underline font-bold py-2 px-4 rounded border border-red" v-on:click="cancelUpdate(expense)">Cancel</button>
             </div>
           </form>
         </div>
@@ -221,24 +222,20 @@ export default {
       })
         .catch(error => this.setError(error, 'Cannot update expense'))
       },
-      cancel(expense) {
-        let params = {
-        date: expense.date,
-        description: expense.description,
-        amount: expense.amount,
-        category_id: expense.category
-      };
-      this.editedExpense = ''
-      this.$http.secured.patch("api/expenses/" + expense.id, params).then(response => {
-        this.EditedExpense = false;
-      })
+      cancelUpdate: function (expense) {
+      if (this.currentExpense === expense) {
+        this.currentExpense = {};
+      }
+      else {
+        this.currentExpense = expense;
+      }
     },
-    formatPrice(value) {
-        let val = (value/1).toFixed(2)
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      formatPrice(value) {
+          let val = (value/1).toFixed(2)
+          return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      }
     }
   }
-}
 
 </script>
 
