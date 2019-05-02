@@ -5,6 +5,7 @@ import Signin from './views/Signin.vue'
 import Signup from './views/Signup.vue'
 import Categories from './views/Categories.vue'
 import Expenses from './views/Expenses.vue'
+import VueChartJS from '@/views/VueChartJS'
 
 
 
@@ -33,6 +34,11 @@ export default new Router({
       path: '/signup',
       name: 'Signup',
       component: Signup
+    },
+     {
+      path: '/charts',
+      name: 'VueChartJS',
+      component: VueChartJS
     }
     ]
 })

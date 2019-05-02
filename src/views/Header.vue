@@ -10,6 +10,8 @@
         <router-link to="/signup" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign Up</router-link>
         <router-link to="/expenses" class="link-grey px-2 no-underline" v-if="signedIn()">Expenses</router-link>
         <router-link to="/categories" class="link-grey px-2 no-underline" v-if="signedIn()">Categories</router-link>
+        <router-link to="/charts" class="link-grey px-2 no-underline" v-if="signedIn()">Charts</router-link>
+
         <a href="#" @click.prevent="signOut" class="link-grey px-2 no-underline" v-if="signedIn()">Sign out</a>
       </div>
     </div>

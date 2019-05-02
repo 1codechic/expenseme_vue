@@ -13,8 +13,8 @@
     </form>
 
     <hr class="border border-grey-light my-6" />
-
     <ul class="list-reset mt-4">
+      <p class="block flex-1 font-mono font-semibold flex items-center ">Categories</p>
       <li class="py-4" v-for="category in categories" :key="category.id" :category="category">
 
         <div class="flex items-center justify-between flex-wrap">
@@ -34,6 +34,7 @@
             <div class="mb-6 p-4 bg-white rounded border border-grey-light mt-4">
               <input class="input" v-model="category.name" />
               <input type="submit" value="Update" class=" my-2 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 rounded cursor-pointer">
+              <button class= "bg-transparent text-sm hover:bg-red text-red hover:text-white no-underline font-bold py-2 px-4 rounded border border-red" v-on:click="cancelUpdate(category)">Cancel</button>
             </div>
           </form>
         </div>
@@ -92,6 +93,14 @@ export default {
       this.editedCategory = ''
       this.$http.secured.patch(`/api/categories/${category.id}`, { category: { name: category.name } })
         .catch(error => this.setError(error, 'Cannot update category'))
+    },
+    cancelUpdate: function (category) {
+      if (this.currentCategory === category) {
+        this.currentCategory = {};
+      }
+      else {
+        this.currentCategory = category;
+      }
     }
   }
 }
