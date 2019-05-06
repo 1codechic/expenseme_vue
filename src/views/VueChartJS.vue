@@ -1,9 +1,8 @@
 <template>
   <section class="container">
-    <h1>Demo examples of vue-chartjs</h1>
+    <h1>Monthly Expenses</h1>
     <div class="columns">
       <div class="column">
-        <h3>Line Chart</h3>
         <!-- <line-chart></line-chart> -->
       </div>
       <div class="column">
@@ -13,7 +12,6 @@
     </div>
     <div class="columns">
       <div class="column">
-        <h3>Bubble Chart</h3>
          <bar-chart></bar-chart>.
       </div>
     </div>

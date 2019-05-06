@@ -9,6 +9,7 @@ import VueChartJS from '@/views/VueChartJS'
 
 
 
+
 Vue.use(Router)
 
 export default new Router({

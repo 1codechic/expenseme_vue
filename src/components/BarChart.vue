@@ -10,16 +10,16 @@
         datacollection: {
           //Data to be represented on x-axis
           // labels: ['Jan', 'Feb', 'March'],
-          labels: ['jan', 'feb', 'march'],
+          labels: ['march', 'april', 'may'],
           datasets: [
             {
-              label: 'Categories',
+              label: 'Expenses',
               backgroundColor: '#f87979',
               pointBackgroundColor: 'white',
               borderWidth: 1,
               pointBorderColor: '#249EBF',
               //Data to be represented on y-axis
-              data: [10, 20, 30]
+              data: ['1200', '650', '250']
             }
           ]
         },
