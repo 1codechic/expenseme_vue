@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import Home from './views/Home.vue'
+import Home from './views/Home.vue'
 import Signin from './views/Signin.vue'
 import Signup from './views/Signup.vue'
 import Categories from './views/Categories.vue'
@@ -26,11 +26,16 @@ export default new Router({
       name: 'Expenses',
       component: Expenses
     },
-    {
+     {
       path: '/',
+      name: 'Home',
+      component: Home
+     },
+     {
+      path: '/signin',
       name: 'Signin',
       component: Signin
-    },
+     },
    {
       path: '/signup',
       name: 'Signup',

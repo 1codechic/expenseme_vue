@@ -6,7 +6,7 @@
         <a href="/" class="uppercase text-sm font-mono pl-4 font-semibold no-underline text-indigo-dark hover:text-indigo-darker">expen$eMe</a>
       </div>
       <div>
-        <router-link to="/" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign in</router-link>
+        <router-link to="/signin" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign in</router-link>
         <router-link to="/signup" class="link-grey px-2 no-underline" v-if="!signedIn()">Sign Up</router-link>
         <router-link to="/expenses" class="link-grey px-2 no-underline" v-if="signedIn()">Expenses</router-link>
         <router-link to="/categories" class="link-grey px-2 no-underline" v-if="signedIn()">Categories</router-link>
