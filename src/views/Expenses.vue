@@ -49,7 +49,7 @@
         <p class="pt-4">Don't see a Category? <router-link class="text-grey-darker underline" to="/categories">Create a Category</router-link></p>
        </div>
 
-      <input type="submit" value="Add Expense" class="font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block w-full py-4 text-white items-center justify-center">
+      <input type="submit" value="Add Expense" class="font-sans font-bold px-4 rounded cursor-pointer no-underline bg-indigo hover:bg-indigo-dark block w-full py-4 text-white items-center justify-center">
     </form>
     <br>
     <p class="block flex font-mono font-semibold flex items-center">Expenses</p>
@@ -234,7 +234,7 @@ export default {
     },
       formatPrice(value) {
           let val = (value/1).toFixed(2)
-          return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+          return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
       }
     }
   }

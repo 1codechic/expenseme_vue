@@ -6,7 +6,7 @@
         <!-- <line-chart></line-chart> -->
       </div>
       <div class="column">
-        <h3>Bar Chart</h3>
+        
         <!--Bar Chart example-->
       </div>
     </div>
